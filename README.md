@@ -21,6 +21,12 @@ $$
 
 where $c$ is a constant complex number. Different values for $c$ produce difference Julia Sets.
 
+## Example
+
+### Julia Set with default parameters
+
+![Julia set with default parameters and purple colour palette ](/public/sample.png)
+
 ## Installation and usage
 
 1. Clone
