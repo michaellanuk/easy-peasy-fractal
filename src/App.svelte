@@ -36,8 +36,19 @@
   <h1>Fractal Generator</h1>
 
   <p>Adjust Julia Set Parameters:</p>
-  <label>cX: {cX}<input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:change={draw} />
-  <label>cY: {cY}<input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:change={draw} />
+
+  <label>
+    cX: 
+    <input type="number" bind:value={cX} min="-2" max="2" step="0.01" on:input={draw} />
+    <input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:change={draw} />
+  </label>
+
+  <label>
+    cY: 
+    <input type="number" bind:value={cY} min="-2" max="2" step="0.01" on:input={draw} />
+    <input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:change={draw} />
+  </label>
+
 
   <div class="fractal">
       <canvas id="fractalCanvas" width="800" height="800"></canvas>
@@ -68,9 +79,8 @@
     filter: drop-shadow(0 0 1em #ff3e00aa);
   }
   .fractal {
-    border: 1px solid #ccc;
-    padding: 40px;
-    margin: 10px;
+    border: 1px solid white;
+    margin: 20px;
     display: flex;
     justify-content: center;
   }
