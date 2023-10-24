@@ -2,6 +2,8 @@
 
 A simple fractal generator built with JavaScript, HTML5 Canvas, and web workers, plus Vite and Vercel for deployment.
 
+https://easy-peasy-fractal.vercel.app/
+
 ## Fractals and the Julia Set
 
 The Julia Set is derived from the behavior of complex numbers when repeatedly applied to a function. For a given complex function $f(z)$, the Julia Set is the set of complex numbers such that the iterations remain bounded.
@@ -23,9 +25,12 @@ where $c$ is a constant complex number. Different values for $c$ produce differe
 
 ## Example
 
-### Julia Set with default parameters
+### Julia Set samples
 
-![Julia set with default parameters and purple colour palette ](/public/sample.png)
+![Julia Set with purple colour palette ](/public/julia-sample-1.png)
+![Julia Set with purple colour palette ](/public/julia-sample-2.png)
+![Julia Set with purple colour palette ](/public/julia-sample-3.png)
+![Julia Set with purple colour palette ](/public/julia-sample-4.png)
 
 ## Installation and usage
 

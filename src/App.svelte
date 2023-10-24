@@ -51,7 +51,7 @@
 
 
   <div class="fractal">
-      <canvas id="fractalCanvas" width="800" height="800"></canvas>
+      <canvas id="fractalCanvas" width="700" height="450"></canvas>
   </div>
 
   <div>
