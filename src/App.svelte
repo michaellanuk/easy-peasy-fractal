@@ -19,6 +19,16 @@
 </script>
 
 <main>
+  <h1>Fractal Generator</h1>
+
+  <p>Adjust Julia Set Parameters:</p>
+  <label>cX: {cX}<input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:change={draw} />
+  <label>cY: {cY}<input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:change={draw} />
+
+  <div class="fractal">
+      <canvas id="fractalCanvas" width="800" height="800"></canvas>
+  </div>
+
   <div>
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
       <img src={viteLogo} class="logo" alt="Vite Logo" />
@@ -27,44 +37,26 @@
       <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
     </a>
   </div>
-  <h1>Vite + Svelte</h1>
-
-  <p>Adjust Julia Set Parameters:</p>
-  <label>cX: {cX}<input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:change={draw} />
-  <label>cY: {cY}<input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:change={draw} />
-
-  <div class="card">
-      <canvas id="fractalCanvas" width="800" height="800"></canvas>
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  <p>Built with Vite + Svelte</p>
 </main>
 
 <style>
   .logo {
-    height: 6em;
+    height: 3em;
     padding: 1.5em;
     will-change: filter;
     transition: filter 300ms;
   }
   .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+    filter: drop-shadow(0 0 1em #646cffaa);
   }
   .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+    filter: drop-shadow(0 0 1em #ff3e00aa);
   }
   .fractal {
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 40px;
+    margin: 10px;
     display: flex;
     justify-content: center;
   }
