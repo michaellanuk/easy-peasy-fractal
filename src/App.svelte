@@ -1,7 +1,16 @@
 <script lang="ts">
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import { onMount } from 'svelte';
+  import { drawJulia } from './lib/fractal';
+
+  onMount(() => {
+      const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+          drawJulia(ctx, canvas.width, canvas.height);
+      }
+  });
 </script>
 
 <main>
@@ -15,8 +24,8 @@
   </div>
   <h1>Vite + Svelte</h1>
 
-  <div class="card">
-    <Counter />
+  <div class="fractal">
+    <canvas id="fractalCanvas" width="800" height="800"></canvas>
   </div>
 
   <p>
@@ -43,5 +52,11 @@
   }
   .read-the-docs {
     color: #888;
+  }
+  .fractal {
+    border: 1px solid #ccc;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 </style>
