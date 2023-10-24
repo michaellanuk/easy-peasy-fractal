@@ -1,11 +1,8 @@
-const drawJulia = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
+const drawJulia = (ctx: CanvasRenderingContext2D, width: number, height: number, cX: number = -0.7, cY: number = 0.27015) => {
     const maxIterations = 1000;
     const magnificationFactor = 200;
     const panX = 0;
     const panY = 0;
-    
-    const cX = -0.7;  // These values determine the shape and detail of the Julia Set
-    const cY = 0.27015;
 
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {

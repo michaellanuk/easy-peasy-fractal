@@ -4,13 +4,18 @@
   import { onMount } from 'svelte';
   import { drawJulia } from './lib/fractal';
 
-  onMount(() => {
-      const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-          drawJulia(ctx, canvas.width, canvas.height);
-      }
-  });
+  let cX: number = -0.7;
+  let cY: number = 0.27015;
+
+  const draw = () => {
+    const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      drawJulia(ctx, canvas.width, canvas.height, cX, cY);
+    }
+  }
+
+  onMount(draw);
 </script>
 
 <main>
@@ -24,8 +29,12 @@
   </div>
   <h1>Vite + Svelte</h1>
 
-  <div class="fractal">
-    <canvas id="fractalCanvas" width="800" height="800"></canvas>
+  <p>Adjust Julia Set Parameters:</p>
+  <label>cX: {cX}<input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:change={draw} />
+  <label>cY: {cY}<input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:change={draw} />
+
+  <div class="card">
+      <canvas id="fractalCanvas" width="800" height="800"></canvas>
   </div>
 
   <p>
