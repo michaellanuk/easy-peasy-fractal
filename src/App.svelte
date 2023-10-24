@@ -3,33 +3,77 @@
   import viteLogo from '/vite.svg'
   import { onMount } from 'svelte';
 
+  import { vertexShaderSource } from './shaders/vertex.ts';
+  import { fragmentShaderSource } from './shaders/fragment.ts';
+
   let cX: number = -0.7;
   let cY: number = 0.27015;
-  let worker: Worker;
+  let gl: WebGLRenderingContext;
+  let program: WebGLProgram;
+  let positionBuffer: WebGLBuffer;
 
-  const draw = () => {
-    const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
-    worker.postMessage({ 
-      width: canvas.width, 
-      height: canvas.height, 
-      cX: cX, 
-      cY: cY 
-    });
-  }
+  const createShader = (type, source) => {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      throw new Error(gl.getShaderInfoLog(shader));
+    }
+    return shader;
+  };
 
   onMount(() => {
-    worker = new Worker('/workers/fractalWorker.js');
+    const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
+
+    gl = canvas.getContext("webgl");
+    if (!gl) throw new Error("WebGL not supported");
+
+    // Compile shaders and link WebGL program
+    const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
     
-    worker.onmessage = (event) => {
-      const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.putImageData(event.data, 0, 0);
-      }
-    };
+    program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      throw new Error(gl.getProgramInfoLog(program));
+    }
+
+    // Setup buffer for quad vertices
+    positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    const positions = [
+      -1, -1,
+       1, -1,
+      -1,  1,
+       1,  1,
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
     draw();
   });
+
+  const draw = () => {
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    // Set uniforms for fragment shader
+    const u_resolution = gl.getUniformLocation(program, "u_resolution");
+    const u_c = gl.getUniformLocation(program, "u_c");
+
+    gl.useProgram(program);
+    gl.uniform2f(u_resolution, gl.canvas.width, gl.canvas.height);
+    gl.uniform2f(u_c, cX, cY);
+
+    // Bind position buffer and link it to position attribute
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  };
 </script>
 
 <main>
@@ -40,18 +84,18 @@
   <label>
     cX: 
     <input type="number" bind:value={cX} min="-2" max="2" step="0.01" on:input={draw} />
-    <input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:change={draw} />
+    <input type="range" bind:value={cX} min="-2" max="2" step="0.01" on:input={draw} />
   </label>
 
   <label>
     cY: 
     <input type="number" bind:value={cY} min="-2" max="2" step="0.01" on:input={draw} />
-    <input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:change={draw} />
+    <input type="range" bind:value={cY} min="-2" max="2" step="0.01" on:input={draw} />
   </label>
 
 
   <div class="fractal">
-      <canvas id="fractalCanvas" width="700" height="450"></canvas>
+      <canvas id="fractalCanvas" width="1000" height="500"></canvas>
   </div>
 
   <div>
