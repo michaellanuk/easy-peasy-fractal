@@ -1,6 +1,6 @@
 # Easy Peasy Fractal
 
-A simple fractal generator built with JavaScript, HTML5 Canvas, and web workers, plus Vite and Vercel for deployment.
+A simple fractal generator built with JavaScript and WebGL, plus Vite and Vercel for deployment.
 
 https://easy-peasy-fractal.vercel.app/
 
