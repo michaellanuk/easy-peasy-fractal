@@ -1,8 +1,11 @@
-const drawJulia = (ctx: CanvasRenderingContext2D, width: number, height: number, cX: number = -0.7, cY: number = 0.27015) => {
+self.onmessage = function(event) {
+    const { width, height, cX, cY } = event.data;
     const maxIterations = 1000;
     const magnificationFactor = 200;
     const panX = 0;
     const panY = 0;
+
+    const imageData = new ImageData(width, height);
 
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
@@ -17,11 +20,14 @@ const drawJulia = (ctx: CanvasRenderingContext2D, width: number, height: number,
                 iterations++;
             }
 
-            const color = iterations === maxIterations ? "#000" : `rgb(${iterations % 255}, ${iterations % 255}, ${iterations % 255})`;
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, 1, 1);
+            const index = (y * width + x) * 4; 
+            const colorValue = iterations === maxIterations ? 0 : iterations % 255;
+            imageData.data[index] = colorValue;
+            imageData.data[index + 1] = colorValue;
+            imageData.data[index + 2] = colorValue;
+            imageData.data[index + 3] = 255;
         }
     }
-}
 
-export { drawJulia };
+    self.postMessage(imageData);
+};

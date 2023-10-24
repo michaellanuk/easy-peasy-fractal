@@ -2,20 +2,34 @@
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
   import { onMount } from 'svelte';
-  import { drawJulia } from './lib/fractal';
 
   let cX: number = -0.7;
   let cY: number = 0.27015;
+  let worker: Worker;
 
   const draw = () => {
     const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      drawJulia(ctx, canvas.width, canvas.height, cX, cY);
-    }
+    worker.postMessage({ 
+      width: canvas.width, 
+      height: canvas.height, 
+      cX: cX, 
+      cY: cY 
+    });
   }
 
-  onMount(draw);
+  onMount(() => {
+    worker = new Worker('/workers/fractalWorker.js');
+    
+    worker.onmessage = (event) => {
+      const canvas = document.getElementById("fractalCanvas") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.putImageData(event.data, 0, 0);
+      }
+    };
+
+    draw();
+  });
 </script>
 
 <main>
