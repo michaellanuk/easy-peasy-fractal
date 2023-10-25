@@ -21,7 +21,7 @@ const palette = [
     [116, 52, 235]      // Deep Purple
 ];
 
-self.onmessage = function(event) {
+self.onmessage = function (event) {
     const { width, height, cX, cY } = event.data;
     const maxIterations = 1000;
     const magnificationFactor = 200;
